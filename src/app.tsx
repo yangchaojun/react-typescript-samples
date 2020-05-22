@@ -5,8 +5,8 @@ import {
   NameEditComponent,
   ColorBrowser,
   ColorPicker,
-  SidebarComponent,
-  MemberTableComponent
+  SidebarComponent
+  // MemberTableComponent
 } from './components'
 import { Color } from './model/color'
 
@@ -53,7 +53,7 @@ export const App = () => {
           </li>
         </ul>
       </SidebarComponent>
-      <MemberTableComponent />
+      {/* <MemberTableComponent /> */}
       <ColorBrowser color={color} />
       <ColorPicker color={color} onColorUpdated={setColor} />
       <HelloComponent userName={name} />
