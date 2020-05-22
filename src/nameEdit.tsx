@@ -1,26 +1,28 @@
 import * as React from 'react'
-const { useState } = React
 
 interface Props {
   initialUserName: string
-  onNameUpdated: (newName: string) => any
+  editingName: string
+  onNameUpdated: () => void
+  onEditingNameUpdated: (newEditingName: string) => void
+  disabled: boolean
 }
 export const NameEditComponent = (props: Props) => {
-  const [editingName, setEditingName] = useState(props.initialUserName)
-
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditingName(e.target.value)
+    props.onEditingNameUpdated(e.target.value)
   }
 
   const onNameSubmit = (): void => {
-    props.onNameUpdated(editingName)
+    props.onNameUpdated()
   }
 
   return (
     <>
       <label>Update name:</label>
-      <input type="text" value={editingName} onChange={onChange} />
-      <button onClick={onNameSubmit}>Change</button>
+      <input type="text" value={props.editingName} onChange={onChange} />
+      <button onClick={onNameSubmit} disabled={props.disabled}>
+        Change
+      </button>
     </>
   )
 }

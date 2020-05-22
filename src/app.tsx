@@ -1,13 +1,25 @@
 import * as React from 'react'
-const { useState } = React
+const { useState, useEffect } = React
 import { HelloComponent } from './hello'
 import { NameEditComponent } from './nameEdit'
 
 export const App = () => {
   const [name, setName] = useState('initialName')
+  const [editingNmae, setEditingName] = useState('defaultUserName')
 
-  const setUsernameState = (newName: string) => {
-    setName(newName)
+  const loadUsername = () => {
+    setTimeout(() => {
+      setName('name from async call')
+      setEditingName('name from async call')
+    }, 500)
+  }
+
+  useEffect(() => {
+    loadUsername()
+  }, [])
+
+  const setUsernameState = () => {
+    setName(editingNmae)
   }
 
   return (
@@ -15,7 +27,10 @@ export const App = () => {
       <HelloComponent userName={name} />
       <NameEditComponent
         initialUserName={name}
+        editingName={editingNmae}
         onNameUpdated={setUsernameState}
+        onEditingNameUpdated={setEditingName}
+        disabled={editingNmae === '' || editingNmae === name}
       />
     </>
   )
