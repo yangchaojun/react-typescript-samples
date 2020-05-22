@@ -18,7 +18,8 @@ module.exports = {
     inline: true,
     host: 'localhost',
     port: 8089,
-    stats: 'errors-only'
+    stats: 'errors-only',
+    https: true
   },
   module: {
     rules: [

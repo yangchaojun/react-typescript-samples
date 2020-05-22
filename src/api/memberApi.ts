@@ -1,22 +1,28 @@
 import { MemberEntity } from '../model/member'
+import Axios, { AxiosResponse } from 'axios'
+
+const gitHubURL = 'https://api.github.com'
+const gitHubMembersUrl = `${gitHubURL}/orgs/vuejs/members`
 
 export const getMembersCollection = (): Promise<MemberEntity[]> => {
   const promise = new Promise<MemberEntity[]>((resolve, reject) => {
-    setTimeout(() => {
-      resolve([
-        {
-          id: 1437912,
-          login: 'baraulidae',
-          avatar_url: 'https://avatars.githubusercontent.com/u/1457912?v=3'
-        },
-        {
-          id: 4374977,
-          login: 'Nasdan',
-          avatar_url: 'https://avatars.githubusercontent.com/u/4374977?v=3'
-        }
-      ])
-    }, 500)
+    try {
+      Axios.get<MemberEntity[]>(gitHubMembersUrl).then((response) =>
+        resolve(mapMemberListAPiToModel(response))
+      )
+    } catch (err) {
+      reject(err)
+    }
   })
 
   return promise
 }
+
+const mapMemberListAPiToModel = ({
+  data
+}: AxiosResponse<any[]>): MemberEntity[] =>
+  data.map((gitHubMember) => ({
+    id: gitHubMember.id,
+    login: gitHubMember.login,
+    avatar_url: gitHubMember.avatar_url
+  }))
