@@ -6,52 +6,49 @@ interface Props {
   onColorUpdated: (color: Color) => void
 }
 
+const updateColor = (props: Props, colorId: keyof Color) => (value: number) => {
+  props.onColorUpdated({
+    ...props.color,
+    [colorId]: value
+  })
+}
+
 export const ColorPicker = (props: Props) => (
   <div>
-    <input
-      type="range"
-      min="0"
-      max="255"
+    <ColorSliderComponent
       value={props.color.red}
-      onChange={(event) =>
-        props.onColorUpdated({
-          red: +event.target.value,
-          green: props.color.green,
-          blue: props.color.blue
-        })
-      }
+      onValueChange={updateColor(props, 'red')}
     />
-    {props.color.red}
     <br />
-    <input
-      type="range"
-      min="0"
-      max="255"
+    <ColorSliderComponent
       value={props.color.green}
-      onChange={(event) =>
-        props.onColorUpdated({
-          red: props.color.red,
-          green: +event.target.value,
-          blue: props.color.blue
-        })
-      }
+      onValueChange={updateColor(props, 'green')}
     />
-    {props.color.green}
     <br />
-    <input
-      type="range"
-      min="0"
-      max="255"
+    <ColorSliderComponent
       value={props.color.blue}
-      onChange={(event) =>
-        props.onColorUpdated({
-          red: props.color.red,
-          green: props.color.green,
-          blue: +event.target.value
-        })
-      }
+      onValueChange={updateColor(props, 'blue')}
     />
-    {props.color.blue}
     <br />
   </div>
 )
+
+interface PropsColorSlider {
+  value: number
+  onValueChange: (newValue: number) => void
+}
+
+const ColorSliderComponent = (props: PropsColorSlider) => {
+  return (
+    <div>
+      <input
+        type="range"
+        min="0"
+        max="255"
+        value={props.value}
+        onChange={(event) => props.onValueChange(+event.target.value)}
+      />
+      {props.value}
+    </div>
+  )
+}
